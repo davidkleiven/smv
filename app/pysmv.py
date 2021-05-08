@@ -6,6 +6,7 @@ from smv import NordPoolFetcher
 def cli():
     pass
 
+
 @click.command()
 @click.argument('outfile')
 def npfetch(outfile):
@@ -19,6 +20,7 @@ def npfetch(outfile):
         print(f"NordPool data written to {outfile}")
     except Exception as exc:
         print(exc)
+
 
 cli.add_command(npfetch)
 

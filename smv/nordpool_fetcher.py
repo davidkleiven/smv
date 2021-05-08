@@ -3,7 +3,9 @@ import yaml
 import pkgutil
 import pandas as pd
 
+
 __all__ = ('NordPoolFetcher',)
+
 
 class NordPoolFetcher:
     """
@@ -19,7 +21,7 @@ class NordPoolFetcher:
         """
         data = yaml.safe_load(pkgutil.get_data(__name__, "assets/nordpool_files.yml"))
         return data.get('files', [])
-  
+
     def fetch(self):
         """
         Fetches data from nordpool and stores them in a file
