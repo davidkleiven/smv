@@ -1,10 +1,10 @@
 import pytest
-from smv import NordPoolFetcher, fetch_nve
+from smv import fetch_nordpool, fetch_nve
 
 
 @pytest.mark.slow
 def test_nordpool_fetcher():
-    data = NordPoolFetcher().fetch()
+    data = fetch_nordpool()
     assert not data.empty
 
 
