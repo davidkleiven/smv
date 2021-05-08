@@ -37,7 +37,16 @@ def fetch_nordpool():
     Fetches data from nordpool and stores them in a file
     """
     links = _load_nordpool_links()
-    return pd.concat([pd.read_html(url)[0] for url in links])
+    datasets = []
+    for url in links:
+        data = pd.read_html(url, decimal=',', thousands=None)[0]
+
+        # Pandas interpretes the HTML as a nested table. The two outermost levels
+        # has only one column, thus the column names can be replaced by the two
+        # last columns
+        data.columns = data.columns.get_level_values(2)
+        datasets.append(data)
+    return pd.concat(datasets)
 
 
 def _load_nordpool_links() -> List[str]:

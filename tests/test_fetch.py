@@ -5,6 +5,8 @@ from smv import fetch_nordpool, fetch_nve
 @pytest.mark.slow
 def test_nordpool_fetcher():
     data = fetch_nordpool()
+    print(data)
+    assert False
     assert not data.empty
 
 
