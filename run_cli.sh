@@ -7,3 +7,6 @@ $CMD --help
 
 # Run npfetch help
 $CMD npfetch --help
+
+# Run nvefetch
+$CMD nvefetch --help

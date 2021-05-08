@@ -1,5 +1,5 @@
 import click
-from smv import NordPoolFetcher
+from smv import NordPoolFetcher, fetch_nve
 
 
 @click.group()
@@ -22,7 +22,20 @@ def npfetch(outfile):
         print(exc)
 
 
+@click.command()
+@click.argument("url")
+@click.argument("outfile")
+def nvefetch(url: str, outfile: str):
+    """
+    Fetches data via NVE's API using the passed url and store them in a CSV file given by outfile.
+    See http://api.nve.no/doc/magasinstatistikk/
+    """
+    data = fetch_nve(url)
+    data.to_csv(outfile)
+
+
 cli.add_command(npfetch)
+cli.add_command(nvefetch)
 
 
 if __name__ == '__main__':
