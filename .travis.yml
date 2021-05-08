@@ -9,5 +9,6 @@ script:
     - python --version
     - flake8 smv/
     - flake8 app/
+    - flake8 tests/
     - bash run_cli.sh
-    - pytest tests/ -m "not slow"
+    - pytest tests/
