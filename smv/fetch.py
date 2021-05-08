@@ -1,9 +1,12 @@
 import requests
 import logging
 import pandas as pd
+from typing import List
+import yaml
+import pkgutil
 
 
-__all__ = ('fetch_nve',)
+__all__ = ('fetch_nve', 'fetch_nordpool')
 
 
 logger = logging.getLogger(__name__)
@@ -27,3 +30,19 @@ def fetch_nve(url: str) -> pd.DataFrame:
         return pd.DataFrame([])
 
     return pd.read_json(res.content)
+
+
+def fetch_nordpool():
+    """
+    Fetches data from nordpool and stores them in a file
+    """
+    links = _load_nordpool_links()
+    return pd.concat([pd.read_html(url)[0] for url in links])
+
+
+def _load_nordpool_links() -> List[str]:
+    """
+    Load the links from assets(nordpool_files.yml)
+    """
+    data = yaml.safe_load(pkgutil.get_data(__name__, "assets/nordpool_files.yml"))
+    return data.get('files', [])

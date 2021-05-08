@@ -1,5 +1,5 @@
 import click
-from smv import NordPoolFetcher, fetch_nve
+from smv import fetch_nordpool, fetch_nve
 
 
 @click.group()
@@ -14,8 +14,7 @@ def npfetch(outfile):
     Fetches all data from nordpool and stores them in a csv file
     """
     try:
-        fetcher = NordPoolFetcher()
-        data = fetcher.fetch()
+        data = fetch_nordpool()
         data.to_csv(outfile)
         print(f"NordPool data written to {outfile}")
     except Exception as exc:
