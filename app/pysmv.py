@@ -33,6 +33,7 @@ def nvefetch(url: str, outfile: str):
     data = fetch_nve(url)
     data.to_csv(outfile)
 
+
 cli.add_command(npfetch)
 cli.add_command(nvefetch)
 
