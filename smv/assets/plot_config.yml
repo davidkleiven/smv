@@ -32,3 +32,21 @@ plots:
         name: NO4
       - query: src == 'NVE' & omrnr == 5 & omrType == 'EL'
         name: NO5
+
+  - name: Endring i fyllingsgrad vs. pris (totalt)
+    type: parametric
+    x:
+      query: src == 'NVE' & omrType == 'EL'
+      field: endring_fyllingsgrad
+    y: 
+      query: src == 'nordpool'
+      field: Price
+
+  - name: Endring i fyllingsgrad vs. pris NO1
+    type: parametric
+    x:
+      query: src == 'NVE' & omrType == 'EL' & omrnr == 1
+      field: endring_fyllingsgrad
+    y: 
+      query: src == 'nordpool' & omrnr == 1
+      field: Price

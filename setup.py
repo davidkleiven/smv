@@ -5,7 +5,7 @@ setup(
     version="0.1",
     packages=find_packages(),
     install_requires=['click', 'pyyaml', 'pandas', 'requests', 'plotly', 'dash',
-                      'dash_core_components', 'datetime>=3.8'],
+                      'dash_core_components', 'datetime>=3.8', 'numpy', 'scipy'],
     package_data={
         'static': ['smv/assets/*']
     }
