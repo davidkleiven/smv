@@ -104,7 +104,7 @@ def year_week2date(year_week: str) -> datetime.date:
     Converts year and week to a data by picking the Monday in that week
     """
     splitted = year_week.split('-')
-    week, year = splitted[0], splitted[1]
+    week, year = splitted[0].strip(), splitted[1].strip()
 
     if len(year) == 2:
         # Missing century

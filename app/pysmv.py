@@ -1,5 +1,5 @@
 import click
-from smv import fetch_nordpool, fetch_nve, raw_plot
+from smv import fetch_nordpool, fetch_nve, raw_plot, parametric_plot
 from smv.util import fig_container
 import dash_html_components as html
 import yaml
@@ -74,13 +74,15 @@ def plot(conf_file):
     ok = True
     html_sections = []
     for i, plt in enumerate(config['plots']):
-        if plt.get('type', '') == 'timeseries':
-            try:
+        try:
+            if plt.get('type', '') == 'timeseries':
                 fig = raw_plot(data, plt['x'], plt['y'], plt['series'])
-                html_sections.append(fig_container(plt['name'], f'fig{i}', fig))
-            except Exception as exc:
-                ok = False
-                print(exc)
+            elif plt.get('type', '') == 'parametric':
+                fig = parametric_plot(data, plt['x'], plt['y'])
+            html_sections.append(fig_container(plt['name'], f'fig{i}', fig))
+        except Exception as exc:
+            ok = False
+            print(exc)
 
     if ok:
         app = dash.Dash(__name__)
