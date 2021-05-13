@@ -33,6 +33,22 @@ plots:
       - query: src == 'NVE' & omrnr == 5 & omrType == 'EL'
         name: NO5
 
+  - name: Fyllingsgrad sesong justert
+    type: timeseries
+    x: dato_Id
+    y: fyllingsgrad_deseasonalized
+    series:
+      - query: src == 'NVE' & omrnr == 1 & omrType == 'EL'
+        name: NO1
+      - query: src == 'NVE' & omrnr == 2 & omrType == 'EL'
+        name: NO2
+      - query: src == 'NVE' & omrnr == 3 & omrType == 'EL'
+        name: NO3
+      - query: src == 'NVE' & omrnr == 4 & omrType == 'EL'
+        name: NO4
+      - query: src == 'NVE' & omrnr == 5 & omrType == 'EL'
+        name: NO5
+
   - name: Endring i fyllingsgrad vs. pris (totalt)
     type: parametric
     x:
@@ -47,6 +63,15 @@ plots:
     x:
       query: src == 'NVE' & omrType == 'EL' & omrnr == 1
       field: endring_fyllingsgrad
+    y: 
+      query: src == 'nordpool' & omrnr == 1
+      field: Price
+
+  - name: Endring i fyllingsgrad vs. pris NO1
+    type: parametric
+    x:
+      query: src == 'NVE' & omrType == 'EL' & omrnr == 1
+      field: fyllingsgrad_deseasonalized
     y: 
       query: src == 'nordpool' & omrnr == 1
       field: Price
