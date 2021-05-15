@@ -90,6 +90,10 @@ def nveds(data: str):
 @click.command()
 @click.argument("conf_file")
 def plot(conf_file):
+    """
+    Plot all plots specified in the yaml config files. This command launches a
+    dash application.
+    """
     # Load configuration the configuration file
     with open(conf_file, 'r') as infile:
         config = yaml.safe_load(infile)
@@ -129,12 +133,26 @@ def info(data: str):
     print(f"Columns: {df.columns}")
 
 
+@click.command()
+@click.argument("data")
+@click.argument("col")
+def unique(data: str, col: str):
+    """
+    Lists all unique values in col
+    """
+    df = pd.read_json(data)
+    unique = set(df[col])
+    print(f"Unique values in {col}:")
+    print(unique)
+
+
 cli.add_command(npfetch)
 cli.add_command(nvefetch)
 cli.add_command(fetch)
 cli.add_command(plot)
 cli.add_command(nveds)
 cli.add_command(info)
+cli.add_command(unique)
 
 
 if __name__ == '__main__':

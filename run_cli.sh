@@ -10,3 +10,9 @@ $CMD npfetch --help
 
 # Run nvefetch
 $CMD nvefetch --help
+
+# Run info
+$CMD info --help
+
+# Run unique
+$CMD unique --help
