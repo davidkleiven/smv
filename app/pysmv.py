@@ -1,6 +1,7 @@
 import click
 from smv import fetch_nordpool, fetch_nve, raw_plot, parametric_plot
-from smv.util import fig_container
+from smv.util import fig_container, add_deseasonalized_value, add_missing_columns
+from smv.constants import DATE, SEC_PER_YEAR, TIME_FMT
 import dash_html_components as html
 import yaml
 import dash
@@ -59,6 +60,34 @@ def nvefetch(url: str, outfile: str):
 
 
 @click.command()
+@click.argument("data")
+def nveds(data: str):
+    """
+    Remove yearly variation by using differencing to the NVE data
+    """
+    df = pd.read_json(data)
+    orig_fields = set(df.columns)
+    el_data = df.query("src == 'NVE' & omrType == 'EL'")
+
+    for f in ["fyllingsgrad", "kapasitet_TWh", "fylling_TWh"]:
+        for omr in range(1, 6):
+            omr_data = el_data.query(f"omrnr == {omr}")
+            omr_data = add_deseasonalized_value(omr_data, DATE, f, TIME_FMT, SEC_PER_YEAR)
+
+            # Pandas does not transfer columns that are not already in the data frame
+            # Work around: Add missing columns to the parent data frame before updating
+            add_missing_columns(df, omr_data.columns)
+
+            # Update parent dataframe
+            df.update(omr_data)
+
+    df.to_json(data)
+    print(f"Updated dataset written to {data}")
+    new_fields = set(df.columns) - orig_fields
+    print(f"New fields in the new datset {new_fields}")
+
+
+@click.command()
 @click.argument("conf_file")
 def plot(conf_file):
     # Load configuration the configuration file
@@ -90,10 +119,22 @@ def plot(conf_file):
         app.run_server(debug=True)
 
 
+@click.command()
+@click.argument("data")
+def info(data: str):
+    """
+    Lists information such as field-names for the passe data
+    """
+    df = pd.read_json(data)
+    print(f"Columns: {df.columns}")
+
+
 cli.add_command(npfetch)
 cli.add_command(nvefetch)
 cli.add_command(fetch)
 cli.add_command(plot)
+cli.add_command(nveds)
+cli.add_command(info)
 
 
 if __name__ == '__main__':

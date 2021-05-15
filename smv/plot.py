@@ -1,7 +1,7 @@
 from typing import Dict, Sequence
 import plotly.graph_objects as go
 import pandas as pd
-from smv.constants import DATE
+from smv.constants import DATE, TIME_FMT
 from smv.util import datetime2float
 from scipy.interpolate import interp1d
 import numpy as np
@@ -67,8 +67,8 @@ def parametric_plot(df: pd.DataFrame, x: Dict[str, str],
         df_x = df_sorted.query(x['query'])
         df_y = df_sorted.query(y['query'])
 
-        param_x = [datetime2float(x) for x in df_x[DATE]]
-        param_y = [datetime2float(y) for y in df_y[DATE]]
+        param_x = [datetime2float(x, TIME_FMT) for x in df_x[DATE]]
+        param_y = [datetime2float(y, TIME_FMT) for y in df_y[DATE]]
 
         x_interp = interp1d(param_x, df_x[x['field']])
         y_interp = interp1d(param_y, df_y[y['field']])
