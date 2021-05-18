@@ -2,7 +2,7 @@ from typing import Dict, Sequence
 import plotly.graph_objects as go
 import pandas as pd
 from smv.constants import DATE, TIME_FMT
-from smv.util import datetime2float
+from smv.util import datetime2epoch
 from scipy.interpolate import interp1d
 import numpy as np
 
@@ -67,8 +67,8 @@ def parametric_plot(df: pd.DataFrame, x: Dict[str, str],
         df_x = df_sorted.query(x['query'])
         df_y = df_sorted.query(y['query'])
 
-        param_x = [datetime2float(x, TIME_FMT) for x in df_x[DATE]]
-        param_y = [datetime2float(y, TIME_FMT) for y in df_y[DATE]]
+        param_x = [datetime2epoch(x, TIME_FMT) for x in df_x[DATE]]
+        param_y = [datetime2epoch(y, TIME_FMT) for y in df_y[DATE]]
 
         x_interp = interp1d(param_x, df_x[x['field']])
         y_interp = interp1d(param_y, df_y[y['field']])
@@ -97,6 +97,9 @@ def parametric_plot(df: pd.DataFrame, x: Dict[str, str],
 
 
 def raw_plot_series_is_valid(series: Sequence[Dict[str, str]]) -> bool:
+    """
+    Return True if series contain all mandatory fields, otherwise False
+    """
     for s in series:
         for f in RAW_PLOT_REQUIRED_FIELDS:
             if f not in s:
@@ -105,6 +108,9 @@ def raw_plot_series_is_valid(series: Sequence[Dict[str, str]]) -> bool:
 
 
 def parametric_plot_queries_is_valid(item: Dict[str, str]) -> bool:
+    """
+    Return True if item contain all mandatory fields, otherwise False
+    """
     for f in PARAM_PLOT_REQUIRED_FIELDS:
         if f not in item.keys():
             return False
