@@ -1,24 +1,25 @@
 import pytest
+import pandas as pd
 from smv import fetch_nordpool, fetch_nve
 from smv.fetch import year_week2date
 
 
 @pytest.mark.slow
 def test_nordpool_fetcher():
-    data = fetch_nordpool()
-    print(data)
-    assert False
+    data_dict = fetch_nordpool()
+    data = pd.DataFrame(data_dict)
     assert not data.empty
 
 
 def test_nve_fetch_invalid_url():
     data = fetch_nve("clearlyNotAValidURL")
-    assert data.empty
+    assert len(data) == 0
 
 
 @pytest.mark.slow
 def test_nve_fetch_valid_url():
-    data = fetch_nve("https://nvebiapi.nve.no/api/Magasinstatistikk/HentOffentligData")
+    data_dict = fetch_nve("https://nvebiapi.nve.no/api/Magasinstatistikk/HentOffentligData")
+    data = pd.DataFrame(data_dict)
     assert not data.empty
 
 

@@ -20,12 +20,13 @@ def fetch_nve(url: str, standardize: bool = False) -> dict:
     is returned
 
     :param url: URL to fetch from
+    :param standardize: If True, the data will be standardized
     """
     try:
         res = requests.get(url)
     except Exception as exc:
         logger.warning(exc)
-        return pd.DataFrame([])
+        return {}
 
     if res.status_code != 200:
         logger.warning(f"An error occured. Error code: {res.status_code}")
@@ -41,6 +42,8 @@ def fetch_nve(url: str, standardize: bool = False) -> dict:
 def fetch_nordpool(standardize: bool = False):
     """
     Fetches data from nordpool and stores them in a file
+
+    :param standardize: If True, the data will be standardized
     """
     links = _load_nordpool_links()
     datasets = []
@@ -75,6 +78,8 @@ def standardize_nordpool(df: pd.DataFrame) -> pd.DataFrame:
     """
     Converts nordpool data into NVE format. Only cities with an
     assigned "area number" will be extracted. See constants.NP2PO.
+
+    :param df: Dataframe from nordpool HTML files
     """
     std_rep = []
     for _, row in df.iterrows():
